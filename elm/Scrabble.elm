@@ -1,4 +1,5 @@
 module Scrabble exposing (
+  Error(InadequateNumberOfPlayers),
   game,
   player)
 
