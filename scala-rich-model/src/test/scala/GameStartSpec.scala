@@ -4,7 +4,7 @@ import org.specs2.mutable.Specification
 
 
 class GameStartSpec extends Specification {
-  def individuals(n: Int) = Seq.fill(n)(Player()).toSet
+  def individuals(n: Int) = Seq.fill(n)(Person()).toSet
 
   "A game of scrabble" >> {
     "can be played by 2 to 4 players" >> {
