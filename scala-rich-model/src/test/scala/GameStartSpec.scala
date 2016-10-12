@@ -1,28 +1,43 @@
 package scrabble
 
-import org.specs2.mutable.Specification
+import org.specs2._, specification.Tables
 
+class GameStartSpec extends Specification with Tables {
 
-class GameStartSpec extends Specification {
-  def individuals(n: Int) = Seq.fill(n)(Person()).toSet
+  val John = new Person(Id(java.util.UUID.fromString("0-0-0-0-0")))
+  val Jack = new Person(Id(java.util.UUID.fromString("1-1-1-1-1")))
 
-  "A game of scrabble" >> {
-    "can be played by 2 to 4 players" >> {
-      val games =
-        (2 to 4)
-        .map(individuals)
-        .map(Game.start)
+  val invitation = Invitation(John).join(Jack)
 
-      games must haveSize(3)
+  def is = s2"""
+
+    Player who draws the 'A' tile begins the game ${
+                                           "Bag" | "Expected turns" |>
+      new DeterministicBag(Tile('A'), Tile('C')) !  Seq(John, Jack) |
+      {
+        (bag, expectedTurns) =>
+          Game.order(invitation, bag) must_== expectedTurns
+      }
     }
 
-    "can't be played solitary" >> {
-      Game.start(individuals(1)) must throwAn[InadequateNumberOfPlayers]
+    Or the closest tile to 'A' ${
+                                           "Bag" | "Expected turns" |>
+      new DeterministicBag(Tile('D'), Tile('J')) !  Seq(John, Jack) |
+      new DeterministicBag(Tile('K'), Tile('I')) !  Seq(Jack, John) |
+      new DeterministicBag(Tile('Z'), Tile('X')) !  Seq(Jack, John) |
+      {
+        (bag, expectedTurns) =>
+          Game.order(invitation, bag) must_== expectedTurns
+      }
     }
 
-    "can't be played by more than 4 players" >> {
-      Game.start(individuals(5)) must throwAn[InadequateNumberOfPlayers]
+    First one to draw the same tile wins over follower ${
+                                             "Bag" | "Expected turns" |>
+        new DeterministicBag(Tile('B'), Tile('B')) !  Seq(John, Jack) |
+      {
+        (bag, expectedTurns) =>
+          Game.order(invitation, bag) must_== expectedTurns
+      }
     }
-  }
-
+    """
 }
