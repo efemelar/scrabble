@@ -3,7 +3,9 @@ package scrabble
 import util.Random
 
 
-class Tile private(val letter: Char) extends AnyVal
+class Tile private(val letter: Char) extends AnyVal {
+  override def toString = s"Tile($letter)"
+}
 
 object Tile {
   val blank = new Tile(' ')

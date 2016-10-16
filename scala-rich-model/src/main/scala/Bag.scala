@@ -5,6 +5,8 @@ trait Bag {
   def take: (Tile, Bag)
 }
 
+class NoTilesLeft extends Exception
+
 class DeterministicBag(tiles: Tile*) extends Bag {
   private val leftTiles = tiles.toList
 
