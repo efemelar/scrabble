@@ -2,20 +2,21 @@ package scrabble
 
 
 class StandardBag private(
-  leftTiles: Seq[Tile]
+  tiles: Seq[Tile]
 ) extends Bag {
   def this() = this(StandardBag.initialTiles)
 
-  def take: (Tile, Bag) = {
-    if (leftTiles.isEmpty) throw new NoTilesLeft
-    else {
-      val i = util.Random.nextInt(leftTiles.size)
-      val drawn = leftTiles(i)
-      val l = leftTiles.takeWhile(_ != drawn)
-      val r = leftTiles.dropWhile(_ != drawn).drop(1)
+  private def excluding(t: Tile): Seq[Tile] =
+    tiles.takeWhile(_ != t) ++ tiles.dropWhile(_ != t).drop(1)
 
-      (drawn, new StandardBag(l ++ r))
-    }
+  def take: (Tile, Bag) = {
+    val drawn = tiles(util.Random.nextInt(tiles.size))
+    val lessTiles = excluding(drawn)
+    val smallerBag =
+      if (lessTiles.isEmpty) EmptyBag
+      else new StandardBag(lessTiles)
+
+    (drawn, smallerBag)
   }
 }
 
