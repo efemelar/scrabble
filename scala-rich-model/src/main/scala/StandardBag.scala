@@ -6,15 +6,10 @@ class StandardBag private(
 ) extends Bag {
   def this() = this(StandardBag.initialTiles)
 
-  private def excluding(t: Tile): Seq[Tile] =
-    tiles.takeWhile(_ != t) ++ tiles.dropWhile(_ != t).drop(1)
-
   def take: (Tile, Bag) = {
-    val drawn = tiles(util.Random.nextInt(tiles.size))
-    val lessTiles = excluding(drawn)
-    val smallerBag =
-      if (lessTiles.isEmpty) EmptyBag
-      else new StandardBag(lessTiles)
+    val shuffled = util.Random.shuffle(tiles)
+    val (drawn, left) = (shuffled.head, shuffled.tail)
+    val smallerBag = if (left.isEmpty) EmptyBag else new StandardBag(left)
 
     (drawn, smallerBag)
   }
