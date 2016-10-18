@@ -1,9 +1,7 @@
 package scrabble
 
-import org.specs2.mutable.Specification
 
-
-class InvitationSpec extends Specification {
+class InvitationSpec extends Spec {
   private def individuals(n: Int) = Seq.fill(n)(Person())
   private val bag = new DeterministicBag()
 

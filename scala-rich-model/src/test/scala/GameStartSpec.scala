@@ -1,8 +1,7 @@
 package scrabble
 
-import org.specs2._, specification.Tables
 
-class GameStartSpec extends Specification with Tables {
+class GameStartSpec extends TableSpec {
 
   val John = new Person(Id(java.util.UUID.fromString("0-0-0-0-0")))
   val Jack = new Person(Id(java.util.UUID.fromString("1-1-1-1-1")))
