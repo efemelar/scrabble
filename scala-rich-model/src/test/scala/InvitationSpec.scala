@@ -1,5 +1,7 @@
 package scrabble
 
+import bag.DeterministicBag
+
 
 class InvitationSpec extends Spec {
   private def individuals(n: Int) = Seq.fill(n)(Person())

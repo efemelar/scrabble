@@ -1,5 +1,7 @@
 package scrabble
 
+import bag.Bag
+
 
 class Game private(persons: Seq[Person]) {
   val players = persons.map(p => Player(p.id, Score(0)))

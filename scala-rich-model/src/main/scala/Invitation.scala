@@ -1,5 +1,7 @@
 package scrabble
 
+import bag.Bag
+
 
 case class Player private(id: Id[Person], score: Score)
 

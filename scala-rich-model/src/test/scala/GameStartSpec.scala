@@ -1,5 +1,7 @@
 package scrabble
 
+import bag.DeterministicBag
+
 
 class GameStartSpec extends TableSpec {
 
