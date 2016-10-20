@@ -6,7 +6,7 @@ package bag
 class BagSpec extends Spec {
   "Standard bag has 100 tiles" >> {
     val bag = new StandardBag
-    val (_, emptyBag) = bag.take(100)
+    val (_, emptyBag) = bag.draw(100)
 
     emptyBag.isEmpty must beTrue
   }
@@ -14,12 +14,12 @@ class BagSpec extends Spec {
   "Drawing several tiles at once has same effect as one by one" >> {
     val bag = new DeterministicBag(Tile('A'), Tile('B'), Tile('C'))
 
-    val atOnce = bag.take(3)._1
+    val atOnce = bag.draw(3)._1
 
     val oneByOne = {
-      val fst = bag.take
-      val snd = fst._2.take
-      val trd = snd._2.take
+      val fst = bag.draw
+      val snd = fst._2.draw
+      val trd = snd._2.draw
 
       List(fst, snd, trd).map(_._1)
     }
@@ -28,6 +28,6 @@ class BagSpec extends Spec {
   }
 
   "Empty bag yields no tiles" >> {
-    EmptyBag.take must throwA[NoTilesLeft]
+    EmptyBag.draw must throwA[NoTilesLeft]
   }
 }

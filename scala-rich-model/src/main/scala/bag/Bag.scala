@@ -9,7 +9,7 @@ trait Bag {
   protected def shuffle(tiles: Tiles): Tiles
   protected def cons(tiles: Tiles): Bag
 
-  def take: (Tile, Bag) = {
+  def draw: (Tile, Bag) = {
     shuffle(tiles) match {
       case Nil => throw new NoTilesLeft
       case h :: Nil => (h, EmptyBag)
@@ -17,10 +17,10 @@ trait Bag {
     }
   }
 
-  def take(n: Int): (Tiles, Bag) = {
+  def draw(n: Int): (Tiles, Bag) = {
     val (ts_, b_) = (1 to n).foldLeft[(Tiles, Bag)]((Nil, this)) {
       case ((ts, b), _) =>
-        val (t, bb) = b.take
+        val (t, bb) = b.draw
         (t :: ts, bb)
     }
     (ts_.reverse, b_)

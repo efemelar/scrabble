@@ -17,7 +17,7 @@ object Game {
       val noDraws = (Seq.empty[(Person, Tile)], b)
 
       i.persons.foldLeft(noDraws) { case ((draws, bag), person) =>
-        val (tile, bagWithoutTile) = bag.take
+        val (tile, bagWithoutTile) = bag.draw
         (draws :+ (person -> tile), bagWithoutTile)
       }
     }
