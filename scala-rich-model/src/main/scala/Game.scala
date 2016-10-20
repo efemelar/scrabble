@@ -12,16 +12,8 @@ object Game {
     new Game(order(invitation, bag))
   }
 
-  def order(i: Invitation, b: Bag) = {
-    val (allDraws, _) = {
-      val noDraws = (Seq.empty[(Person, Tile)], b)
-
-      i.persons.foldLeft(noDraws) { case ((draws, bag), person) =>
-        val (tile, bagWithoutTile) = bag.draw
-        (draws :+ (person -> tile), bagWithoutTile)
-      }
-    }
-
-    allDraws.sortBy(_._2).map(_._1)
+  def order(i: Invitation, b: Bag): Seq[Person] = {
+    val (tiles, _) = b.draw(i.persons.size)
+    i.persons.zip(tiles).sortBy(_._2).map(_._1)
   }
 }
