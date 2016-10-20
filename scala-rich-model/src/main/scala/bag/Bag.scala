@@ -18,13 +18,15 @@ trait Bag {
   }
 
   def take(n: Int): (Tiles, Bag) = {
-    (1 to n).foldLeft[(Tiles, Bag)]((Nil, this)) {
+    val (ts_, b_) = (1 to n).foldLeft[(Tiles, Bag)]((Nil, this)) {
       case ((ts, b), _) =>
         val (t, bb) = b.take
         (t :: ts, bb)
     }
+    (ts_.reverse, b_)
   }
 
+  def isEmpty = tiles.isEmpty
 
   override def toString =
     "Bag("+tiles.map(_.letter).mkString(",")+")"
