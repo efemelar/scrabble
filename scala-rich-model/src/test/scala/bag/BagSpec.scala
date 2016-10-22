@@ -11,9 +11,13 @@ class BagSpec extends Spec {
     emptyBag.isEmpty must beTrue
   }
 
-  "Drawing several tiles at once has same effect as one by one" >> {
-    val bag = new DeterministicBag(Tile('A'), Tile('B'), Tile('C'))
+  "Empty bag yields no tiles" >> {
+    EmptyBag.draw must throwA[NoTilesLeft]
+  }
+}
 
+abstract class ConsecutiveDrawsSpec(bag: Bag) extends Spec {
+  "Drawing several tiles at once has same effect as one by one" >> {
     val atOnce = bag.draw(3)._1
 
     val oneByOne = {
@@ -26,8 +30,10 @@ class BagSpec extends Spec {
 
     atOnce mustEqual oneByOne
   }
-
-  "Empty bag yields no tiles" >> {
-    EmptyBag.draw must throwA[NoTilesLeft]
-  }
 }
+
+class StandardBagSpec
+  extends ConsecutiveDrawsSpec(new StandardBag)
+
+class DeterministicBagSpec
+  extends ConsecutiveDrawsSpec(new DeterministicBag(Tile('A'), Tile('B'), Tile('C')))

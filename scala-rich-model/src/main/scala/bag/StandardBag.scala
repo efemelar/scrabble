@@ -1,14 +1,24 @@
 package scrabble
 package bag
 
+import scala.util.Random
+
 
 class StandardBag private(
-  protected val tiles: Bag#Tiles
+  protected val tiles: Bag#Tiles,
+  seed: Long = System.nanoTime
 ) extends Bag {
+  private val rnd = new Random(seed)
+
   def this() = this(StandardBag.initialTiles)
 
-  protected def shuffle(ts: Tiles): Tiles = util.Random.shuffle(ts)
-  protected def cons(ts: Tiles): Bag = new StandardBag(ts)
+  protected def shuffle(ts: Tiles): Tiles = {
+    val shuffled = rnd.shuffle(ts)
+    rnd.setSeed(seed)
+    shuffled
+  }
+
+  protected def cons(ts: Tiles): Bag = new StandardBag(ts, seed)
 }
 
 object StandardBag {
